@@ -1,0 +1,29 @@
+{
+  "name": "auto-poll-script",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node --experimental-modules build/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gettmure/polls-script-ts.git"
+  },
+  "author": "gettmure",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gettmure/polls-script-ts/issues"
+  },
+  "homepage": "https://github.com/gettmure/polls-script-ts#readme",
+  "dependencies": {
+    "@types/dotenv": "^8.2.0",
+    "dotenv": "^8.2.0",
+    "node-vk-sdk": "^1.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.14",
+    "typescript": "^3.9.6"
+  }
+}
