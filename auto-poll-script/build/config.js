@@ -19,9 +19,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv = __importStar(require("dotenv"));
+const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-var config = {
+const config = {
     Token: process.env.TOKEN,
     Owner_ID: Number(process.env.OWNER_ID),
 };

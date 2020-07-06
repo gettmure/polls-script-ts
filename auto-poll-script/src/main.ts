@@ -8,9 +8,10 @@ const api: VKApi = new VKApi({
   token: config.Token,
 });
 
-const yasosuhui = async () => {
+const main = async () => {
   const posts = await getPosts(api);
+  getUsers(api, posts);
   console.log(posts);
 };
 
-yasosuhui();
+main();

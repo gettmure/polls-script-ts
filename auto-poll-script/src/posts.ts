@@ -2,9 +2,7 @@ import { WallWallpostFull } from 'node-vk-sdk/distr/src/generated/Models';
 import { getWeekTimestamp } from './shared/utils';
 import { MILLISECONDS_PER_SECOND } from './shared/constants';
 import { VKApi } from 'node-vk-sdk';
-import { WallGetResponse } from 'node-vk-sdk/distr/src/generated/Responses';
 import config from './config';
-import { resolve } from 'path';
 
 const options = {
   owner_id: config.Owner_ID,
@@ -13,7 +11,7 @@ const options = {
   fields: ['profiles'],
 };
 
-const getPosts = async (api: VKApi) => {
+const getPosts = async (api: VKApi): Promise<Array<WallWallpostFull>> => {
   const response = await api.wallGet(options);
   const timestamp: number = getWeekTimestamp();
   const allPosts: Array<WallWallpostFull> = response['items'];

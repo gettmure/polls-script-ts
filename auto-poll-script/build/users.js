@@ -4,17 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsers = void 0;
-var config_1 = __importDefault(require("./config"));
-var options = {
+const config_1 = __importDefault(require("./config"));
+const options = {
     access_token: config_1.default.Token,
     user_ids: [],
 };
-var getUsers = function (api, posts) {
-    var users = [];
-    posts.forEach(function (post) {
+const getUsers = (api, posts) => {
+    let users = [];
+    posts.forEach((post) => {
         options.user_ids.push(String(post.from_id));
     });
-    api.usersGet(options).then(function (response) { });
+    api.usersGet(options).then((response) => { });
 };
 exports.getUsers = getUsers;
 //# sourceMappingURL=users.js.map
