@@ -39,29 +39,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsers = void 0;
 var config_1 = __importDefault(require("./config"));
 var options = {
-    access_token: config_1.default.Token,
-    user_ids: [],
+    access_token: '',
+    question: 'маму ебал',
+    add_answers: 'idi, na, huy',
+    owner_id: config_1.default.Owner_ID,
 };
-var getUsers = function (api, posts) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, users;
+var postPoll = function (api, posts, users) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                posts.forEach(function (post) {
-                    options.user_ids.push(String(post.signer_id));
-                });
-                return [4 /*yield*/, api.usersGet(options)];
+                url = 'https://oauth.vk.com/authorize?client_id=7531869&display=popup&redirect_uri=http://example.com/callback&scope=wall&response_type=token&v=5.120&state=aue';
+                return [4 /*yield*/, fetch(url)];
             case 1:
                 response = _a.sent();
-                users = response.map(function (user) {
-                    return user.first_name + " " + user.last_name;
-                });
-                return [2 /*return*/, users];
+                console.log(response);
+                return [2 /*return*/];
         }
     });
 }); };
-exports.getUsers = getUsers;
-//# sourceMappingURL=users.js.map
+exports.default = postPoll;
+//# sourceMappingURL=poll.js.map
