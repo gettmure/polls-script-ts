@@ -23,6 +23,7 @@ var dotenv = __importStar(require("dotenv"));
 dotenv.config();
 var config = {
     Token: process.env.TOKEN,
+    Poll_Token: process.env.TOKEN_POLL,
     Owner_ID: Number(process.env.OWNER_ID),
 };
 exports.default = config;

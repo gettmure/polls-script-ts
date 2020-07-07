@@ -57,7 +57,9 @@ var getUsers = function (api, posts) { return __awaiter(void 0, void 0, void 0, 
             case 1:
                 response = _a.sent();
                 users = response.map(function (user) {
-                    return user.first_name + " " + user.last_name;
+                    var name = user.first_name + " " + user.last_name;
+                    var id = user.id;
+                    return { name: name, id: id };
                 });
                 return [2 /*return*/, users];
         }

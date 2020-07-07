@@ -61,11 +61,10 @@ var getPosts = function (api) { return __awaiter(void 0, void 0, void 0, functio
                     var postDate = post.date * constants_1.MILLISECONDS_PER_SECOND;
                     var isValid = postDate >= timestamp && post.hasOwnProperty('signer_id');
                     if (isValid) {
-                        var url = post.attachments[0].photo.sizes.pop().url;
-                        // const data = fetch();
+                        var photoId = post.attachments[0].photo.id;
                         var validPost = {
                             signer_id: post.signer_id,
-                            image_url: url,
+                            photoId: photoId,
                         };
                         validPosts.push(validPost);
                     }

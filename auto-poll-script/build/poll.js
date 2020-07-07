@@ -40,22 +40,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_1 = __importDefault(require("./config"));
-var options = {
-    access_token: '',
-    question: 'маму ебал',
-    add_answers: 'idi, na, huy',
+var pollOptions = {
+    access_token: config_1.default.Poll_Token,
+    question: 'ГЕРОЙ НЕДЕЛИ!',
+    add_answers: '',
     owner_id: config_1.default.Owner_ID,
+    photo_id: 457239020,
+};
+var postOptions = {
+    owner_id: config_1.default.Owner_ID,
+    from_group: true,
+    message: 'ПОГНАЛИ!',
+};
+var getPollData = function (posts, users) {
+    var result = [];
+    posts.forEach(function (post) {
+        var user = users.find(function (user) { return post.signer_id == user.id; });
+        var pollItem = {
+            name: user.name,
+            photoId: post.photoId,
+        };
+        result.push(pollItem);
+    });
+    return result;
 };
 var postPoll = function (api, posts, users) { return __awaiter(void 0, void 0, void 0, function () {
-    var url, response;
+    var pollItems, pollObject, postResponse;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                url = 'https://oauth.vk.com/authorize?client_id=7531869&display=popup&redirect_uri=http://example.com/callback&scope=wall&response_type=token&v=5.120&state=aue';
-                return [4 /*yield*/, fetch(url)];
+                pollItems = getPollData(posts, users);
+                pollOptions.add_answers = JSON.stringify(pollItems.map(function (item, index) { return index + 1 + " (" + item.name + ")"; }));
+                return [4 /*yield*/, api.pollsCreate(pollOptions)];
             case 1:
-                response = _a.sent();
-                console.log(response);
+                pollObject = _a.sent();
+                return [4 /*yield*/, api.pollsEdit({
+                        owner_id: config_1.default.Owner_ID,
+                        poll_id: pollObject.id,
+                        background_id: '1',
+                    })];
+            case 2:
+                _a.sent();
+                postOptions.attachments = ["poll" + config_1.default.Owner_ID + "_" + pollObject.id];
+                pollItems.forEach(function (item) {
+                    var photo = "photo" + config_1.default.Owner_ID + "_" + item.photoId;
+                    postOptions.attachments.push(photo);
+                });
+                return [4 /*yield*/, api.wallPost(postOptions)];
+            case 3:
+                postResponse = _a.sent();
                 return [2 /*return*/];
         }
     });

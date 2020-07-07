@@ -1,24 +1,59 @@
 import { VKApi } from 'node-vk-sdk';
-import { PollsCreateParams } from 'node-vk-sdk/distr/src/generated/MethodsProps';
+import {
+  PollsCreateParams,
+  WallPostParams,
+} from 'node-vk-sdk/distr/src/generated/MethodsProps';
 import config from './config';
 
-const options: PollsCreateParams = {
-  access_token: '',
-  question: 'маму ебал',
-  add_answers: 'idi, na, huy',
+const pollOptions: PollsCreateParams = {
+  access_token: config.Poll_Token,
+  question: 'ГЕРОЙ НЕДЕЛИ!',
+  add_answers: '',
   owner_id: config.Owner_ID,
+  photo_id: 457239020,
 };
 
-const postPoll = async (
-  api: VKApi,
+const postOptions: WallPostParams = {
+  owner_id: config.Owner_ID,
+  from_group: true,
+  message: 'ПОГНАЛИ!',
+};
+
+const getPollData = (
   posts: Array<Post>,
-  users: Array<string>
-) => {
-  // const response = api.pollsCreate(options);
-  const url: string =
-    'https://oauth.vk.com/authorize?client_id=7531869&display=popup&redirect_uri=http://example.com/callback&scope=wall&response_type=token&v=5.120&state=aue';
-  const response = await fetch(url);
-  console.log(response);
+  users: Array<User>
+): Array<PollItem> => {
+  let result: Array<PollItem> = [];
+  posts.forEach((post: Post) => {
+    const user: User = users.find((user: User) => post.signer_id == user.id);
+    const pollItem: PollItem = {
+      name: user.name,
+      photoId: post.photoId,
+    };
+    result.push(pollItem);
+  });
+  return result;
+};
+
+const postPoll = async (api: VKApi, posts: Array<Post>, users: Array<User>) => {
+  let pollItems: Array<PollItem> = getPollData(posts, users);
+  pollOptions.add_answers = JSON.stringify(
+    pollItems.map(
+      (item: PollItem, index: number) => `${index + 1} (${item.name})`
+    )
+  );
+  const pollObject = await api.pollsCreate(pollOptions);
+  await api.pollsEdit({
+    owner_id: config.Owner_ID,
+    poll_id: pollObject.id,
+    background_id: '1',
+  });
+  postOptions.attachments = [`poll${config.Owner_ID}_${pollObject.id}`];
+  pollItems.forEach((item: PollItem) => {
+    const photo: string = `photo${config.Owner_ID}_${item.photoId}`;
+    postOptions.attachments.push(photo);
+  });
+  const postResponse = await api.wallPost(postOptions);
 };
 
 export default postPoll;

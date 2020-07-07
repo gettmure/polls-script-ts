@@ -1,9 +1,14 @@
-declare type Post = {
+type Post = {
   signer_id: number;
-  image_url: string;
+  photoId: number;
 };
 
-declare type PollMember = {
+type PollItem = {
   name: string;
-  image: any;
+  photoId: number;
+};
+
+type User = {
+  id: number;
+  name: string;
 };
